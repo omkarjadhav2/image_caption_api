@@ -5,10 +5,13 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({"message": "Welcome to the Image Captioning API"})
+    return jsonify({"message": "Welcome to the Image Captioning API. Please send a POST request to /captions with url as raw json format to get captions"})
 
-@app.route('/captions', methods=['POST'])
+@app.route('/captions', methods=['GET', 'POST'])
 def generate():
+    if request.method == 'GET':
+        return jsonify({"message": "Please make a POST request to /captions"}), 405
+    
     data = request.get_json()
     url = data.get("url")
     if not url:
